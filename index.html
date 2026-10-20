@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Avaldo Mebel</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#eef0ec;--card:#fff;--ink:#1c2b26;--mute:#6b7a73;--line:#d9ded8;--spruce:#1f3a32;--brass:#b8873b;--ok:#2f7a4d;--bad:#b3402f}
+@media (prefers-color-scheme:dark){:root{--bg:#141c19;--card:#1d2824;--ink:#e8ece8;--mute:#93a39b;--line:#2c3a35;--spruce:#6fae96;--brass:#d9a652;--ok:#6fcf97;--bad:#e8806f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 0 env(safe-area-inset-bottom,0)}
+header{padding:16px 16px 8px}
+h1{margin:0;font:700 22px Georgia,serif;letter-spacing:.2px;color:var(--spruce)}
+h1 small{display:block;font:400 13px system-ui,sans-serif;color:var(--mute);margin-top:2px}
+nav{display:flex;gap:6px;padding:8px 16px;position:sticky;top:0;background:var(--bg);z-index:5}
+nav button{flex:1;padding:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:600 14px inherit}
+nav button.on{background:var(--spruce);color:#fff;border-color:var(--spruce)}
+@media (prefers-color-scheme:dark){nav button.on{color:#10201a}}
+main{padding:8px 16px 120px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+h2{margin:0 0 10px;font:700 16px system-ui,sans-serif}
+label{display:block;font-size:13px;color:var(--mute);margin:8px 0 4px}
+input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:16px inherit}
+.row{display:flex;gap:8px;align-items:flex-end}.row>*{flex:1}
+.btn{padding:11px 14px;border:0;border-radius:10px;background:var(--brass);color:#1c1608;font:700 15px inherit;width:100%;margin-top:10px}
+.btn.alt{background:transparent;color:var(--bad);border:1px solid var(--line)}
+.x{flex:0 0 40px;padding:10px;border:1px solid var(--line);background:transparent;color:var(--bad);border-radius:10px;font-size:16px}
+.item{display:flex;gap:8px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}.item b{flex:1}.item span{color:var(--mute);font-size:13px}
+.sum{position:fixed;left:0;right:0;bottom:0;background:var(--spruce);color:#fff;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0));display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+@media (prefers-color-scheme:dark){.sum{color:#10201a}}
+.sum div{font-size:12px;opacity:.85}.sum strong{display:block;font-size:16px;opacity:1}
+.big{font:700 26px Georgia,serif}
+.hide{display:none}
+.hint{font-size:13px;color:var(--mute);margin:6px 0 0}
+</style>
+</head>
+<body>
+<header><h1>Avaldo Mebel<small>Narx va foyda hisoblagich</small></h1></header>
+<nav><button id="t1" class="on">Buyurtma</button><button id="t2">Materiallar</button></nav>
+<main>
+<!-- BUYURTMA -->
+<section id="p1">
+  <div class="card"><h2>Mijoz</h2>
+    <label>Mijoz ismi / buyurtma nomi</label><input id="cn" placeholder="Masalan: Aziz aka, oshxona">
+  </div>
+  <div class="card"><h2>Material va furnitura</h2>
+    <div id="lines"></div>
+    <label>Qo'shish</label>
+    <div class="row"><select id="addm"></select><input id="addq" type="number" inputmode="decimal" placeholder="Miqdor"></div>
+    <button class="btn" id="addb">+ Qo'shish</button>
+  </div>
+  <div class="card"><h2>Qo'shimcha xarajatlar (so'm)</h2>
+    <label>Dastavka (yetkazish)</label><input id="x1" type="number" inputmode="numeric" value="0">
+    <label>Ustanovka (o'rnatish) uchun ishchi haqi</label><input id="x2" type="number" inputmode="numeric" value="0">
+    <label>Ishlab chiqarish ishchi haqi</label><input id="x3" type="number" inputmode="numeric" value="0">
+    <label>Boshqa xarajatlar</label><input id="x4" type="number" inputmode="numeric" value="0">
+    <label>Ustama (foyda), %</label><input id="mk" type="number" inputmode="decimal" value="30">
+    <p class="hint">Ustama jami xarajat ustiga qo'shiladi.</p>
+  </div>
+  <div class="card"><h2>Natija</h2>
+    <div class="hint">Mijozga aytiladigan narx</div><div class="big" id="rp">0</div>
+    <div id="det" class="hint"></div>
+    <button class="btn" id="copy">Mijoz uchun matnni nusxalash</button>
+    <button class="btn alt" id="clr">Buyurtmani tozalash</button>
+  </div>
+</section>
+<!-- MATERIALLAR -->
+<section id="p2" class="hide">
+  <div class="card"><h2>Yangi material</h2>
+    <label>Nomi</label><input id="mn" placeholder="Masalan: LDSP 16 mm">
+    <div class="row"><div><label>Birlik</label><select id="mu"><option>list</option><option>metr</option><option>dona</option><option>kv.m</option></select></div>
+    <div><label>Narxi (so'm)</label><input id="mp" type="number" inputmode="numeric"></div></div>
+    <button class="btn" id="mb">Saqlash</button>
+    <p class="hint">Narxlarni o'zingizniki bilan almashtiring. Ular telefoningizda saqlanadi.</p>
+  </div>
+  <div class="card"><h2>Material bazasi</h2><div id="mlist"></div></div>
+  <button class="btn alt" id="rst">Namuna materiallarni qayta yuklash</button>
+</section>
+</main>
+<div class="sum"><div>Xarajat<strong id="s1">0</strong></div><div>Mijozga narx<strong id="s2">0</strong></div><div>Sof foyda<strong id="s3">0</strong></div></div>
+
+<script>
+const tg=window.Telegram&&Telegram.WebApp; if(tg){try{tg.ready();tg.expand()}catch(e){}}
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString('ru-RU').replace(/\u00a0/g,' ');
+const DEF=[
+ {n:'LDSP 16 mm',u:'list',p:350000},{n:'Fasad 18 mm',u:'list',p:860000},{n:'HDF orqa',u:'list',p:140000},
+ {n:'Stol usti',u:'metr',p:250000},{n:'Kromka',u:'metr',p:2500},{n:'Petla',u:'dona',p:3500},
+ {n:'Tutqich',u:'dona',p:12000},{n:'Napravlyayushiy (juft)',u:'dona',p:120000}];
+function load(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let mats=load('am_mats',DEF), order=load('am_order',{lines:[],x:[0,0,0,0],mk:30,cn:''});
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function tab(n){$('p1').classList.toggle('hide',n!=1);$('p2').classList.toggle('hide',n!=2);
+ $('t1').classList.toggle('on',n==1);$('t2').classList.toggle('on',n==2);}
+$('t1').onclick=()=>tab(1);$('t2').onclick=()=>tab(2);
+
+function drawMats(){
+ $('mlist').innerHTML=mats.map((m,i)=>`<div class="item"><b>${esc(m.n)}<br><span>${fmt(m.p)} so'm / ${esc(m.u)}</span></b><button class="x" data-d="${i}">✕</button></div>`).join('')||'<p class="hint">Hali material yo\'q.</p>';
+ $('addm').innerHTML=mats.map((m,i)=>`<option value="${i}">${esc(m.n)} (${esc(m.u)})</option>`).join('');
+ document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{
+  const nm=mats[b.dataset.d].n; mats.splice(b.dataset.d,1); order.lines=order.lines.filter(l=>l.n!==nm); save('am_mats',mats);save('am_order',order);drawMats();calc();});
+}
+$('mb').onclick=()=>{const n=$('mn').value.trim(),p=parseFloat($('mp').value);
+ if(!n||!(p>=0)){alert("Nom va narxni kiriting");return}
+ mats.push({n,u:$('mu').value,p});save('am_mats',mats);$('mn').value='';$('mp').value='';drawMats();};
+$('rst').onclick=()=>{if(confirm("Barcha materiallar namuna ro'yxatga almashtiriladi. Davom etasizmi?")){mats=JSON.parse(JSON.stringify(DEF));save('am_mats',mats);drawMats();calc();}};
+
+$('addb').onclick=()=>{const m=mats[$('addm').value],q=parseFloat($('addq').value);
+ if(!m||!(q>0)){alert("Material va miqdorni kiriting");return}
+ order.lines.push({n:m.n,u:m.u,p:m.p,q});$('addq').value='';save('am_order',order);calc();};
+
+function drawLines(){
+ $('lines').innerHTML=order.lines.map((l,i)=>`<div class="item"><b>${esc(l.n)}<br><span>${l.q} ${esc(l.u)} × ${fmt(l.p)}</span></b><div>${fmt(l.q*l.p)}</div><button class="x" data-r="${i}">✕</button></div>`).join('')||'<p class="hint">Hali material qo\'shilmagan.</p>';
+ document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{order.lines.splice(b.dataset.r,1);save('am_order',order);calc();});
+}
+let T={};
+function calc(){
+ order.x=[1,2,3,4].map(i=>parseFloat($('x'+i).value)||0);order.mk=parseFloat($('mk').value)||0;order.cn=$('cn').value;
+ const mat=order.lines.reduce((s,l)=>s+l.q*l.p,0), ext=order.x.reduce((a,b)=>a+b,0);
+ const cost=mat+ext, price=cost*(1+order.mk/100), profit=price-cost;
+ T={mat,ext,cost,price,profit};
+ drawLines();
+ $('s1').textContent=fmt(cost);$('s2').textContent=fmt(price);$('s3').textContent=fmt(profit);
+ $('rp').textContent=fmt(price)+" so'm";
+ $('det').textContent=`Material: ${fmt(mat)} · Qo'shimcha: ${fmt(ext)} · Ustama: ${order.mk}%`;
+ save('am_order',order);
+}
+['cn','x1','x2','x3','x4','mk'].forEach(id=>$(id).addEventListener('input',calc));
+$('copy').onclick=()=>{const t=`Avaldo Mebel\n${order.cn?order.cn+'\n':''}Buyurtma narxi: ${fmt(T.price)} so'm`;
+ (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert('Nusxalandi')).catch(()=>prompt('Nusxalang:',t));};
+$('clr').onclick=()=>{if(confirm("Buyurtma tozalansinmi?")){order={lines:[],x:[0,0,0,0],mk:30,cn:''};save('am_order',order);init();}};
+
+function init(){$('cn').value=order.cn||'';order.x.forEach((v,i)=>$('x'+(i+1)).value=v);$('mk').value=order.mk;drawMats();calc();}
+init();
+</script>
+</body>
+</html>
