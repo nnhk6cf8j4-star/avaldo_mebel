@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Avaldo Mebel</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--ink:#eef2ee;--mute:#93a69c;--line:rgba(255,255,255,.1);--card:rgba(255,255,255,.055);--g:#6fd0a8;--gold:#e0ad55;--bad:#ef8a78;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{max-width:100%;overflow-x:hidden;margin:0}
+input,select{min-width:0}
+body{background:radial-gradient(120% 50% at 10% -6%,#2b6f58 0,#12271f 40%,#0b1310 72%) fixed;color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:96px}
+h1{margin:0;font:700 26px Georgia,serif}h1 span{color:var(--gold)}
+header{padding:calc(16px + env(safe-area-inset-top,0)) 18px 4px}
+header small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+main{padding:10px 16px}
+section{display:none;animation:up .45s cubic-bezier(.2,.8,.2,1)}section.on{display:block}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px;backdrop-filter:blur(10px)}
+h2{margin:0 0 4px;font:700 17px system-ui}
+.sub{color:var(--mute);font-size:13px;margin:0 0 10px}
+label{display:block;font-size:13px;color:var(--mute);margin:9px 0 4px}
+input,select{width:100%;padding:12px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.3);color:var(--ink);font:16px inherit;transition:border .2s}
+input:focus,select:focus{outline:0;border-color:var(--g)}
+.row{display:flex;gap:8px;align-items:flex-end}.row>*{flex:1;min-width:0}
+.btn{width:100%;margin-top:10px;padding:14px;border:0;border-radius:16px;background:linear-gradient(135deg,#2f7bff,#5fb0ff);color:#fff;font:700 16px inherit;transition:transform .15s,filter .2s}
+.btn.gold{background:linear-gradient(135deg,#efc16c,#bb8832);color:#1c1608}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--bad)}
+.btn:active,.tile:active,.seg button:active{transform:scale(.96)}
+.x{flex:0 0 42px;padding:10px;border:1px solid var(--line);background:transparent;color:var(--bad);border-radius:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{padding:16px 12px;border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--ink);text-align:left;font:600 15px inherit;transition:.2s}
+.tile em{display:block;font:400 12px system-ui;color:var(--mute);font-style:normal;margin-top:4px}
+.tile b{display:block;font-size:26px;margin-bottom:6px}
+.tile.on{border-color:var(--g);background:linear-gradient(160deg,rgba(111,208,168,.25),rgba(111,208,168,.05));box-shadow:0 0 22px rgba(111,208,168,.18)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:64px;padding:11px 6px;border:1px solid var(--line);background:rgba(0,0,0,.28);color:var(--mute);border-radius:14px;font:600 14px inherit;transition:.2s}
+.seg button.on{background:linear-gradient(135deg,#2f7bff,#5fb0ff);color:#fff;border-color:transparent}
+.acc{border:1px solid var(--line);border-radius:20px;background:var(--card);margin-bottom:10px;overflow:hidden}
+.ah{width:100%;display:flex;align-items:center;gap:10px;padding:14px;background:none;border:0;color:var(--ink);font:700 16px inherit;text-align:left}
+.ah i{width:26px;height:26px;border-radius:50%;background:var(--gold);color:#1c1608;font:700 13px/26px system-ui;text-align:center}
+.ah s{margin-left:auto;text-decoration:none;color:var(--mute);font:400 13px system-ui;transition:transform .3s}
+.acc.open .ah s{transform:rotate(90deg)}
+.ab{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+.acc.open .ab{grid-template-rows:1fr}
+.ab>div{overflow:hidden}.ab>div>div{padding:0 14px 14px}
+.sw{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+.sw b{width:36px;height:36px;border-radius:12px;box-shadow:0 0 0 1px var(--line);border:2px solid transparent;transition:transform .15s}
+.sw b.on{border-color:#fff;transform:scale(1.12)}
+.dots{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.dots span{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mute)}.dots u{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 1px var(--line)}
+.chip{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border:1px solid var(--line);border-radius:20px;margin:5px 5px 0 0;font-size:14px}.chip u{text-decoration:none;color:var(--bad)}
+.item{display:flex;gap:8px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}.item:first-child{border-top:0}.item b{flex:1;font-weight:600}.item span{display:block;color:var(--mute);font-size:13px;font-weight:400}
+.hint{font-size:13px;color:var(--mute);margin:8px 0 0}
+#plan,#front{width:100%;height:auto;border-radius:16px;background:rgba(0,0,0,.28);margin-top:10px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.kv div{background:rgba(0,0,0,.28);border-radius:14px;padding:9px 11px;font-size:12px;color:var(--mute)}.kv b{display:block;color:var(--ink);font-size:15px}
+.hero{border-radius:24px;padding:20px;background:linear-gradient(140deg,#2f7bff,#173f9c 55%,#0b1a3d);margin-bottom:12px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(#9cc8ff,transparent 70%);opacity:.45;animation:fl 6s ease-in-out infinite}
+.big{font:700 34px Georgia,serif;position:relative}
+.lock{display:flex;gap:8px;flex-wrap:wrap}.lock span{padding:7px 12px;border:1px dashed var(--line);border-radius:20px;color:var(--mute);font-size:13px}
+.tabbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0));display:flex;background:rgba(18,38,31,.9);border:1px solid var(--line);backdrop-filter:blur(14px);border-radius:24px;padding:6px;z-index:20}
+.tabbar button{flex:1;background:none;border:0;color:var(--mute);padding:8px 2px;border-radius:18px;font:600 11px system-ui;transition:.25s}
+.tabbar button b{display:block;font-size:19px;margin-bottom:1px}
+.tabbar button.on{background:linear-gradient(135deg,#2f7bff,#5fb0ff);color:#fff}
+#splash{position:fixed;inset:0;z-index:50;background:#070b0a;display:flex;flex-direction:column;justify-content:flex-end;padding:28px 22px calc(28px + env(safe-area-inset-bottom,0));overflow:hidden;transition:opacity .5s,transform .5s}
+#splash.out{opacity:0;transform:scale(1.06);pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(55px);animation:fl 8s ease-in-out infinite}
+.b1{width:340px;height:340px;background:#2f7bff;top:-60px;left:-60px}.b2{width:260px;height:260px;background:#3fbf98;top:120px;right:-90px;animation-delay:-3s;opacity:.7}
+@keyframes fl{50%{transform:translate(24px,30px) scale(1.12)}}
+#splash h2{font:700 34px/1.15 system-ui;margin:0 0 10px;position:relative}#splash h2 span{color:#5fb0ff}
+#splash p{color:var(--mute);margin:0 0 16px;position:relative;min-height:44px}
+.pd{display:flex;gap:6px;margin-bottom:20px;position:relative}.pd i{width:8px;height:8px;border-radius:5px;background:#445;transition:.3s}.pd i.on{width:30px;background:#2f7bff}
+#sk{background:none;border:0;color:var(--ink);margin:12px auto 0;padding:8px;position:relative}
+.sl{position:relative;animation:up .5s}
+</style></head><body>
+
+<div id="splash"><div class="blob b1"></div><div class="blob b2"></div>
+ <div class="sl" id="sl"></div><div class="pd" id="pd"></div>
+ <button class="btn" id="nx" style="position:relative">Keyingisi</button><button id="sk">O'tkazib yuborish</button></div>
+
+<header><h1>Avaldo <span>Mebel</span></h1><small id="hs">Loyiha, narx va foyda</small></header>
+<main>
+<section id="s0" class="on">
+ <div class="card"><h2>Nima yasaymiz?</h2><p class="sub">Mebel turini tanlang</p>
+  <div class="grid" id="kinds"></div></div>
+ <div class="card"><h2>Sifat darajasi</h2><p class="sub">Har bir mebel 3 xil variantda tayyorlanadi</p>
+  <div class="grid" id="tiers" style="grid-template-columns:1fr"></div>
+  <button class="btn" id="go">Loyihalashga o'tish →</button></div>
+</section>
+
+<section id="s1">
+ <div class="acc open" data-a><button class="ah"><i>1</i>Xona o'lchamlari<s>›</s></button><div class="ab"><div><div>
+  <div class="row"><div><label>Kengligi (mm)</label><input data-k="rw" class="n" inputmode="numeric"></div><div><label>Chuqurligi (mm)</label><input data-k="rd" class="n" inputmode="numeric"></div></div>
+  <label>Shift balandligi (mm)</label><input data-k="rh" class="n" inputmode="numeric"></div></div></div></div>
+ <div class="acc" data-a><button class="ah"><i>2</i>Mebel shakli<s>›</s></button><div class="ab"><div><div>
+  <div class="seg" id="shp"><button data-s="I">To'g'ri</button><button data-s="L">Burchak L</button><button data-s="U">П shakl</button><button data-s="C">O'zim</button></div>
+  <div id="segs"></div><button class="btn ghost" id="addseg" style="color:var(--ink)">+ Devor qo'shish</button>
+  <p class="hint">Har devor uzunligi va keyingi devorga burilish tomoni.</p></div></div></div></div>
+ <div class="acc" data-a><button class="ah"><i>3</i>Modullar<s>›</s></button><div class="ab"><div><div>
+  <div class="row"><div><label>Pastki balandlik</label><input data-k="bh" class="n" inputmode="numeric"></div><div><label>Pastki chuqurlik</label><input data-k="bd" class="n" inputmode="numeric"></div></div>
+  <label style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input type="checkbox" id="up" style="width:22px;height:22px"> Yuqori shkaflar bor</label>
+  <div class="row"><div><label>Yuqori balandlik</label><input data-k="uh" class="n" inputmode="numeric"></div><div><label>Yuqori chuqurlik</label><input data-k="ud" class="n" inputmode="numeric"></div></div>
+  <label>Tortma tizimi</label><div class="seg" id="drw"><button data-d="Rolik">Rolik</button><button data-d="Tandem">Tandem</button><button data-d="Metabox">Metabox</button></div></div></div></div></div>
+ <div class="acc" data-a><button class="ah"><i>4</i>Ranglar<s>›</s></button><div class="ab"><div><div>
+  <div class="dots" id="dots"></div>
+  <button class="btn gold" id="colb">🎨 Ranglarni tanlash</button>
+  <div id="colp" style="display:none"><div class="seg" id="colk" style="margin-top:12px"></div><div class="sw" id="sw"></div></div></div></div></div></div>
+ <div class="acc" data-a><button class="ah"><i>5</i>Texnika va razetkalar<s>›</s></button><div class="ab"><div><div>
+  <label>Texnikalar</label><div id="apps"></div>
+  <div class="row"><div><label>Nomi</label><input id="an" placeholder="Duxovka"></div><div><label>Eni (mm)</label><input id="aw" class="n" inputmode="numeric" placeholder="600"></div></div>
+  <button class="btn gold" id="aab">+ Texnika qo'shish</button>
+  <label style="margin-top:16px">Razetka va viklyuchatellar</label><div id="soc"></div>
+  <div class="row"><div><label>Turi</label><select id="st"><option>Razetka</option><option>Viklyuchatel</option></select></div><div><label>Devor №</label><select id="sw1"></select></div></div>
+  <div class="row"><div><label>Devor boshidan (sm)</label><input id="sx" class="n" inputmode="numeric" placeholder="100"></div><div><label>Poldan balandlik (sm)</label><input id="sh" class="n" inputmode="numeric" placeholder="110"></div></div>
+  <button class="btn gold" id="sab">+ Qo'shish</button></div></div></div></div>
+ <div class="acc open" data-a><button class="ah"><i>6</i>Reja va ko'rinishlar<s>›</s></button><div class="ab"><div><div>
+  <div class="seg" id="vw"><button data-v="0">Ustidan</button><button data-v="1">Old tomondan</button></div>
+  <div id="wsel" style="display:none"><label>Qaysi devor</label><select id="wl"></select></div>
+  <svg id="plan" viewBox="0 0 400 300"></svg><svg id="front" viewBox="0 0 400 300" style="display:none"></svg>
+  <div class="kv" id="kv"></div></div></div></div></div>
+ <div class="card"><h2>Tez orada</h2><p class="sub">Keyingi bosqichlarda qo'shiladi</p>
+  <div class="lock"><span>🔒 3D ko'rinish</span><span>🔒 Detallar</span><span>🔒 Raskroy</span><span>🔒 Teshiklar</span><span>🔒 Shartnoma</span></div></div>
+</section>
+
+<section id="s2">
+ <div class="hero"><div style="font-size:13px;opacity:.85;position:relative">Mijozga aytiladigan narx</div><div class="big"><span id="rp">0</span> <small style="font-size:15px">so'm</small></div>
+  <div class="kv" style="position:relative"><div style="background:rgba(0,0,0,.25);color:#cfe0ff">Xarajat<b id="s1v">0</b></div><div style="background:rgba(0,0,0,.25);color:#cfe0ff">Sof foyda<b id="s3v">0</b></div></div></div>
+ <div class="card"><h2>Mijoz</h2><input id="cn" placeholder="Masalan: Aziz aka, oshxona"></div>
+ <div class="card"><h2>Material va furnitura</h2><div id="lines"></div>
+  <div class="row"><select id="addm"></select><input id="addq" type="number" inputmode="decimal" placeholder="Miqdor"></div>
+  <button class="btn gold" id="addb">+ Qo'shish</button></div>
+ <div class="card"><h2>Qo'shimcha xarajatlar</h2><p class="sub">Dastavka, ustanovka, kraska, ish haqi va boshqalar</p><div id="ex"></div>
+  <div class="row"><div><label>Nomi</label><input id="en" placeholder="Abet"></div><div><label>Summa (so'm)</label><input id="ev" class="n" inputmode="numeric" placeholder="0"></div></div>
+  <button class="btn gold" id="eb">+ Xarajat qo'shish</button>
+  <label>Ustama (foyda), %</label><input id="mk" type="number" inputmode="decimal">
+  <div class="kv" id="det"></div></div>
+ <button class="btn" id="copy">Mijoz uchun matnni nusxalash</button><button class="btn ghost" id="clr">Buyurtmani tozalash</button>
+</section>
+
+<section id="s3">
+ <div class="card"><h2>Yangi material</h2><label>Nomi</label><input id="mn" placeholder="LDSP 16 mm">
+  <div class="row"><div><label>Birlik</label><select id="mu"><option>list</option><option>metr</option><option>dona</option><option>kv.m</option></select></div><div><label>Narxi (so'm)</label><input id="mp" class="n" inputmode="numeric" placeholder="0"></div></div>
+  <button class="btn gold" id="mb">Saqlash</button></div>
+ <div class="card"><h2>Material bazasi</h2><div id="mlist"></div></div>
+ <div class="card"><h2>Sifat koeffitsiyenti</h2><p class="sub">Material narxiga ko'paytiriladi (1.25 = 25% qimmatroq)</p>
+  <div class="row"><div><label>Arzon</label><input data-m="0" inputmode="decimal"></div><div><label>O'rta</label><input data-m="1" inputmode="decimal"></div><div><label>Premium</label><input data-m="2" inputmode="decimal"></div></div></div>
+ <button class="btn ghost" id="rst">Namuna materiallarni qayta yuklash</button>
+</section>
+</main>
+<nav class="tabbar"><button data-t="0" class="on"><b>🗂</b>Katalog</button><button data-t="1"><b>📐</b>Loyiha</button><button data-t="2"><b>🧾</b>Smeta</button><button data-t="3"><b>📦</b>Baza</button></nav>
+
+<script>
+const tg=window.Telegram&&Telegram.WebApp;if(tg){try{tg.ready();tg.expand();tg.setHeaderColor('#0b1310');tg.setBackgroundColor('#0b1310')}catch(e){}}
+const $=id=>document.getElementById(id),qa=s=>document.querySelectorAll(s);
+const fmt=n=>Math.round(n||0).toLocaleString('en-US');
+const num=el=>parseFloat(String(el.value).replace(/[^\d.]/g,''))||0;
+const money=el=>{const d=el.value.replace(/\D/g,'');el.value=d?Number(d).toLocaleString('en-US'):''};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const load=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const cu=(el,to)=>{const f=+el.dataset.v||0;el.dataset.v=to;const t0=performance.now();(function s(t){const k=Math.min(1,(t-t0)/600);el.textContent=fmt(f+(to-f)*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(s)})(t0)};
+const clone=o=>JSON.parse(JSON.stringify(o));
+const DEF=[{n:'LDSP 16 mm',u:'list',p:350000},{n:'Fasad 18 mm',u:'list',p:860000},{n:'HDF orqa',u:'list',p:140000},{n:'Stol usti',u:'metr',p:250000},{n:'Kromka',u:'metr',p:2500},{n:'Petla',u:'dona',p:3500},{n:'Tutqich',u:'dona',p:12000},{n:'Napravlyayushiy (juft)',u:'dona',p:120000}];
+const KINDS=[['🍳','Oshxona','3D loyiha'],['🚪','Shkaf-kupe','Yotoqxona uchun'],['🛏','Yotoqxona','Karavot, tumba'],['🧥','Prixojka','Kiyim va poyabzal'],['🛋','Zal','Devor, TV zona'],['✨','Boshqa','Istalgan mebel']];
+const TIERS=[['Arzon','LDSP — tejamkor tanlov'],['O\'rta','Akril fasad — sifat va narx muvozanati'],['Premium','Kraska (emal) — yuqori darajadagi fasad']];
+const PAL=['#F2EFE9','#E3D8C6','#C8A97E','#A8794A','#7B5233','#4A3426','#8A9A93','#5E7C70','#2F4A5E','#8A2F2F','#C9A24A','#2B2B2B','#111111'];
+const COLS=[['corpus','Korpus'],['lower','Pastki fasad'],['upper','Yuqori shkaf'],['top','Stol usti'],['wall','Devor'],['floor','Pol'],['handle','Tutqich']];
+const PRE={I:{d:'E',s:[{len:3000,turn:''}]},L:{d:'E',s:[{len:3000,turn:''},{len:1800,turn:'R'}]},U:{d:'N',s:[{len:1800,turn:''},{len:3000,turn:'R'},{len:1800,turn:'R'}]}};
+let mats=load('am_mats',DEF),ST=load('am_set',{m:[1,1.25,1.6]});
+let pj=Object.assign({rw:3000,rd:3500,rh:2700,bh:860,bd:560,uh:720,ud:320,up:true,shape:'L',dir0:'E',segs:clone(PRE.L.s),colors:{corpus:PAL[0],lower:PAL[1],upper:PAL[1],top:PAL[11],wall:PAL[0],floor:PAL[3],handle:PAL[10]},drawer:'Tandem',apps:[{n:'Muzlatgich',w:600},{n:'Gaz plita',w:600}],soc:[],kind:0,tier:1,view:0,ck:'lower',wl:0},load('am_proj',{}));
+let od=load('am_o2',{lines:[],ex:[{n:'Dastavka',v:0},{n:'Ustanovka ishchi haqi',v:0},{n:'Ishlab chiqarish ishchi haqi',v:0},{n:'Kraska',v:0}],mk:30,cn:''});
+const sv=()=>{save('am_proj',pj);save('am_o2',od);save('am_mats',mats);save('am_set',ST)};
+
+// ---- onboarding
+const SL=[['Orzuingdagi mebelni <span>o\'zing loyihala</span>','Xona o\'lchamini kiriting, shakl va ranglarni tanlang.'],['Narx va material <span>bir zumda</span>','Smeta, xarajat va sof foyda avtomatik hisoblanadi.'],['Ishchilarga <span>tushunarli</span> chizma','Aniq o\'lchamli reja va kesish varag\'i.']];
+let si=0;function sl(){$('sl').innerHTML=`<h2>${SL[si][0]}</h2><p>${SL[si][1]}</p>`;$('pd').innerHTML=SL.map((_,i)=>`<i class="${i==si?'on':''}"></i>`).join('');$('nx').textContent=si==SL.length-1?'Boshlash':'Keyingisi'}
+function endSp(){$('splash').classList.add('out');save('am_seen',1);setTimeout(()=>$('splash').style.display='none',500)}
+$('nx').onclick=()=>{if(si<SL.length-1){si++;sl()}else endSp()};$('sk').onclick=endSp;sl();if(load('am_seen',0))$('splash').style.display='none';
+
+// ---- tabs / accordion
+const HS=['Katalog','Loyiha','Smeta va foyda','Material bazasi'];
+function tab(i){qa('section').forEach((s,j)=>s.classList.toggle('on',i==j));qa('.tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.t==i));$('hs').textContent=HS[i];scrollTo(0,0);if(i==2)calc()}
+qa('.tabbar button').forEach(b=>b.onclick=()=>tab(+b.dataset.t));
+qa('[data-a] .ah').forEach(h=>h.onclick=()=>{const a=h.parentNode,o=a.classList.contains('open');qa('[data-a]').forEach(x=>x.classList.remove('open'));if(!o)a.classList.add('open')});
+
+// ---- katalog
+function drawCat(){$('kinds').innerHTML=KINDS.map((k,i)=>`<button class="tile ${pj.kind==i?'on':''}" data-kd="${i}"><b>${k[0]}</b>${k[1]}<em>${k[2]}</em></button>`).join('');
+ $('tiers').innerHTML=TIERS.map((t,i)=>`<button class="tile ${pj.tier==i?'on':''}" data-tr="${i}">${t[0]}<em>${t[1]} · ×${ST.m[i]}</em></button>`).join('')}
+$('go').onclick=()=>tab(1);
+
+// ---- loyiha
+function drawProj(){
+ qa('[data-k]').forEach(e=>e.value=fmt(pj[e.dataset.k]));$('up').checked=pj.up;
+ qa('#shp button').forEach(b=>b.classList.toggle('on',b.dataset.s==pj.shape));qa('#drw button').forEach(b=>b.classList.toggle('on',b.dataset.d==pj.drawer));qa('#vw button').forEach(b=>b.classList.toggle('on',b.dataset.v==pj.view));
+ $('segs').innerHTML=pj.segs.map((g,i)=>`<div class="row"><div><label>${i+1}-devor (mm)</label><input class="n" data-g="${i}" inputmode="numeric" value="${fmt(g.len)}"></div>`+(i?`<div><label>Burilish</label><select data-t="${i}"><option value="R"${g.turn=='R'?' selected':''}>O'ngga</option><option value="L"${g.turn=='L'?' selected':''}>Chapga</option></select></div>`:'')+(pj.segs.length>1?`<button class="x" data-gd="${i}">✕</button>`:'')+'</div>').join('');
+ $('dots').innerHTML=COLS.map(([k,t])=>`<span><u style="background:${pj.colors[k]}"></u>${t}</span>`).join('');
+ $('colk').innerHTML=COLS.map(([k,t])=>`<button data-ck="${k}" class="${pj.ck==k?'on':''}">${t}</button>`).join('');
+ $('sw').innerHTML=PAL.map(c=>`<b data-c="${c}" style="background:${c}" class="${pj.colors[pj.ck]==c?'on':''}"></b>`).join('');
+ $('apps').innerHTML=pj.apps.map((a,i)=>`<span class="chip">${esc(a.n)} · ${fmt(a.w)} mm <u data-ad="${i}">✕</u></span>`).join('')||'<p class="hint">Qo\'shilmagan</p>';
+ $('soc').innerHTML=pj.soc.map((a,i)=>`<span class="chip">${esc(a.t)} · ${a.w+1}-devor · ${a.x} sm · ${a.h} sm <u data-sd="${i}">✕</u></span>`).join('')||'<p class="hint">Qo\'shilmagan</p>';
+ const wo=pj.segs.map((_,i)=>`<option value="${i}">${i+1}-devor</option>`).join('');$('sw1').innerHTML=wo;$('wl').innerHTML=wo;$('wl').value=Math.min(pj.wl,pj.segs.length-1);
+ plan();front();
+}
+function geo(){const D={E:[1,0],S:[0,1],W:[-1,0],N:[0,-1]},R={E:'S',S:'W',W:'N',N:'E'},L={E:'N',N:'W',W:'S',S:'E'};let P=[0,0],d=pj.dir0,pts=[[0,0]],rs=[],t=0;
+ pj.segs.forEach((g,i)=>{if(i)d=(g.turn=='L'?L:R)[d];const v=D[d],n=[-v[1],v[0]],E=[P[0]+v[0]*g.len,P[1]+v[1]*g.len];rs.push({P,v,n,len:g.len});pts.push(E);P=E;t+=g.len});return{pts,rs,t}}
+function plan(){const{pts,rs,t}=geo(),c=pj.colors,x0=Math.min(...pts.map(p=>p[0])),y0=Math.min(...pts.map(p=>p[1]));
+ let all=[[x0,y0],[x0+pj.rw,y0+pj.rd],...pts];rs.forEach(r=>{all.push([r.P[0]+r.n[0]*pj.bd,r.P[1]+r.n[1]*pj.bd],[r.P[0]+r.v[0]*r.len+r.n[0]*pj.bd,r.P[1]+r.v[1]*r.len+r.n[1]*pj.bd])});
+ const mx=Math.min(...all.map(p=>p[0]))-700,my=Math.min(...all.map(p=>p[1]))-500,W=Math.max(...all.map(p=>p[0]))+700-mx,H=Math.max(...all.map(p=>p[1]))+500-my,fs=Math.max(W,H)/28;
+ const q=(r,d)=>{const a=r.P,b=[a[0]+r.v[0]*r.len,a[1]+r.v[1]*r.len];return[a,b,[b[0]+r.n[0]*d,b[1]+r.n[1]*d],[a[0]+r.n[0]*d,a[1]+r.n[1]*d]].map(p=>p.join(',')).join(' ')};
+ let o=`<rect x="${x0}" y="${y0}" width="${pj.rw}" height="${pj.rd}" fill="${c.floor}" opacity=".85"/><polyline points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${c.wall}" stroke-width="${fs*.7}" stroke-linecap="square"/>`;
+ rs.forEach(r=>o+=`<polygon points="${q(r,pj.bd)}" fill="${c.top}" stroke="${c.lower}" stroke-width="${fs*.25}"/>`);
+ if(pj.up)rs.forEach(r=>o+=`<polygon points="${q(r,pj.ud)}" fill="none" stroke="${c.upper}" stroke-width="${fs*.3}" stroke-dasharray="${fs} ${fs*.6}"/>`);
+ pj.soc.forEach(s=>{const r=rs[s.w];if(!r)return;const m=[r.P[0]+r.v[0]*s.x*10,r.P[1]+r.v[1]*s.x*10];o+=`<circle cx="${m[0]}" cy="${m[1]}" r="${fs*.45}" fill="#ffd24a" stroke="#000" stroke-width="${fs*.1}"/>`});
+ rs.forEach(r=>{const m=[r.P[0]+r.v[0]*r.len/2-r.n[0]*fs*1.6,r.P[1]+r.v[1]*r.len/2-r.n[1]*fs*1.6];o+=`<text x="${m[0]}" y="${m[1]+fs/3}" font-size="${fs}" fill="#eef2ee" text-anchor="middle">${fmt(r.len)}</text>`});
+ o+=`<text x="${x0+pj.rw/2}" y="${y0+pj.rd+fs*1.8}" font-size="${fs*.9}" fill="#93a69c" text-anchor="middle">Xona ${fmt(pj.rw)} × ${fmt(pj.rd)} mm</text>`;
+ const p=$('plan');p.setAttribute('viewBox',`${mx} ${my} ${W} ${H}`);p.innerHTML=o;
+ $('kv').innerHTML=`<div>Jami uzunlik<b>${fmt(t)} mm</b></div><div>Modullar (≈600 mm)<b>${Math.ceil(t/600)} ta</b></div><div>Tortma tizimi<b>${pj.drawer}</b></div><div>Texnika / razetka<b>${pj.apps.length} / ${pj.soc.length}</b></div>`}
+function front(){const i=Math.min(pj.wl,pj.segs.length-1),L=pj.segs[i].len,H=pj.rh,c=pj.colors,n=Math.max(1,Math.round(L/600)),w=L/n,fs=Math.max(L,H)/30,bh=pj.bh,pad=fs*4;
+ let o=`<rect x="0" y="0" width="${L}" height="${H}" fill="${c.wall}"/><rect x="0" y="${H-100}" width="${L}" height="100" fill="${c.floor}"/>`;
+ for(let k=0;k<n;k++){o+=`<rect x="${k*w+8}" y="${H-bh}" width="${w-16}" height="${bh-100}" rx="6" fill="${c.lower}" stroke="#0006" stroke-width="3"/><rect x="${k*w+w/2-6}" y="${H-bh+40}" width="12" height="${fs*1.8}" rx="5" fill="${c.handle}"/>`;
+  if(pj.up)o+=`<rect x="${k*w+8}" y="${H-(bh+600+pj.uh)}" width="${w-16}" height="${pj.uh}" rx="6" fill="${c.upper}" stroke="#0006" stroke-width="3"/><rect x="${k*w+w/2-6}" y="${H-(bh+600)-fs*2.4}" width="12" height="${fs*1.8}" rx="5" fill="${c.handle}"/>`}
+ o+=`<rect x="0" y="${H-bh-38}" width="${L}" height="38" fill="${c.top}"/>`;
+ pj.soc.filter(s=>s.w==i).forEach(s=>{o+=`<rect x="${s.x*10-30}" y="${H-s.h*10-30}" width="60" height="60" rx="8" fill="#ffd24a" stroke="#000" stroke-width="4"/><text x="${s.x*10+50}" y="${H-s.h*10+fs/3}" font-size="${fs*.8}" fill="#fff">${s.h} sm</text>`});
+ o+=`<text x="${L/2}" y="${H+fs*2.2}" font-size="${fs}" fill="#eef2ee" text-anchor="middle">${fmt(L)} mm</text><text x="${L+fs*.6}" y="${H/2}" font-size="${fs}" fill="#93a69c">${fmt(H)}</text>`;
+ const f=$('front');f.setAttribute('viewBox',`${-pad*.3} ${-pad*.3} ${L+pad*1.6} ${H+pad*1.1}`);f.innerHTML=o;
+ $('plan').style.display=pj.view?'none':'block';f.style.display=pj.view?'block':'none';$('wsel').style.display=pj.view?'block':'none'}
+
+// ---- smeta
+function drawOrd(){$('cn').value=od.cn||'';$('mk').value=od.mk;
+ $('lines').innerHTML=od.lines.map((l,i)=>`<div class="item"><b>${esc(l.n)}<span>${l.q} ${esc(l.u)} × ${fmt(l.p)}</span></b><div>${fmt(l.q*l.p)}</div><button class="x" data-r="${i}">✕</button></div>`).join('')||'<p class="hint">Hali qo\'shilmagan</p>';
+ $('ex').innerHTML=od.ex.map((e,i)=>`<div class="item"><b>${esc(e.n)}</b><input class="n" data-e="${i}" inputmode="numeric" value="${fmt(e.v)}" style="width:130px"><button class="x" data-ed="${i}">✕</button></div>`).join('');calc()}
+function calc(){od.cn=$('cn').value;od.mk=parseFloat($('mk').value)||0;
+ const mult=ST.m[pj.tier]||1,mat=od.lines.reduce((s,l)=>s+l.q*l.p,0)*mult,ext=od.ex.reduce((s,e)=>s+e.v,0),cost=mat+ext,price=cost*(1+od.mk/100),profit=price-cost;
+ window.T={price,mat,ext,cost,profit};cu($('rp'),price);cu($('s1v'),cost);cu($('s3v'),profit);
+ $('det').innerHTML=`<div>Material (${TIERS[pj.tier][0]} ×${mult})<b>${fmt(mat)}</b></div><div>Qo'shimcha<b>${fmt(ext)}</b></div>`;sv()}
+$('addb').onclick=()=>{const m=mats[$('addm').value],q=parseFloat($('addq').value);if(!m||!(q>0)){alert("Material va miqdorni kiriting");return}od.lines.push({n:m.n,u:m.u,p:m.p,q});$('addq').value='';drawOrd()};
+$('eb').onclick=()=>{const n=$('en').value.trim();if(!n){alert("Nomini kiriting");return}od.ex.push({n,v:num($('ev'))});$('en').value='';$('ev').value='';drawOrd()};
+$('copy').onclick=()=>{const t=`Avaldo Mebel\n${od.cn?od.cn+'\n':''}${KINDS[pj.kind][1]}, ${TIERS[pj.tier][0]} variant\nBuyurtma narxi: ${fmt(T.price)} so'm`;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert('Nusxalandi')).catch(()=>prompt('Nusxalang:',t))};
+$('clr').onclick=()=>{if(confirm("Buyurtma tozalansinmi?")){od.lines=[];od.ex.forEach(e=>e.v=0);od.cn='';drawOrd()}};
+$('cn').oninput=calc;$('mk').oninput=calc;
+
+// ---- baza
+function drawMats(){$('mlist').innerHTML=mats.map((m,i)=>`<div class="item"><b>${esc(m.n)}<span>${fmt(m.p)} so'm / ${esc(m.u)}</span></b><button class="x" data-md="${i}">✕</button></div>`).join('')||'<p class="hint">Bo\'sh</p>';
+ $('addm').innerHTML=mats.map((m,i)=>`<option value="${i}">${esc(m.n)} (${esc(m.u)})</option>`).join('');qa('[data-m]').forEach(e=>e.value=ST.m[e.dataset.m])}
+$('mb').onclick=()=>{const n=$('mn').value.trim(),p=num($('mp'));if(!n||!p){alert("Nom va narxni kiriting");return}mats.push({n,u:$('mu').value,p});$('mn').value='';$('mp').value='';sv();drawMats()};
+$('rst').onclick=()=>{if(confirm("Materiallar namuna ro'yxatga almashtiriladi. Davom etasizmi?")){mats=clone(DEF);sv();drawMats()}};
+
+// ---- events
+document.addEventListener('input',e=>{const t=e.target;if(t.classList.contains('n')){money(t);const v=num(t);
+ if(t.dataset.k){pj[t.dataset.k]=v;sv();plan();front()}else if(t.dataset.g!=null){pj.segs[t.dataset.g].len=v;sv();plan();front()}else if(t.dataset.e!=null){od.ex[t.dataset.e].v=v;calc()}}
+ if(t.dataset.m!=null){ST.m[t.dataset.m]=parseFloat(t.value)||1;sv();drawCat()}});
+document.addEventListener('change',e=>{const t=e.target;if(t.dataset.t){pj.segs[t.dataset.t].turn=t.value;pj.shape='C';sv();drawProj()}if(t.id=='up'){pj.up=t.checked;sv();plan();front()}if(t.id=='wl'){pj.wl=+t.value;sv();front()}});
+document.addEventListener('click',e=>{const t=e.target.closest('[data-s],[data-d],[data-c],[data-ck],[data-gd],[data-ad],[data-sd],[data-r],[data-ed],[data-md],[data-kd],[data-tr],[data-v]');if(!t)return;const d=t.dataset;
+ if(d.s){pj.shape=d.s;if(d.s!='C'){pj.dir0=PRE[d.s].d;pj.segs=clone(PRE[d.s].s)}sv();drawProj()}
+ else if(d.d){pj.drawer=d.d;sv();drawProj()}else if(d.ck){pj.ck=d.ck;sv();drawProj()}else if(d.c){pj.colors[pj.ck]=d.c;sv();drawProj()}
+ else if(d.gd!=null){pj.segs.splice(d.gd,1);pj.segs[0].turn='';pj.shape='C';sv();drawProj()}else if(d.ad!=null){pj.apps.splice(d.ad,1);sv();drawProj()}else if(d.sd!=null){pj.soc.splice(d.sd,1);sv();drawProj()}
+ else if(d.r!=null){od.lines.splice(d.r,1);drawOrd()}else if(d.ed!=null){od.ex.splice(d.ed,1);drawOrd()}else if(d.md!=null){mats.splice(d.md,1);sv();drawMats()}
+ else if(d.kd!=null){pj.kind=+d.kd;sv();drawCat()}else if(d.tr!=null){pj.tier=+d.tr;sv();drawCat()}else if(d.v!=null){pj.view=+d.v;sv();drawProj()}});
+$('colb').onclick=()=>{const p=$('colp');p.style.display=p.style.display=='none'?'block':'none'};
+$('addseg').onclick=()=>{pj.segs.push({len:1500,turn:'R'});pj.shape='C';sv();drawProj()};
+$('aab').onclick=()=>{const n=$('an').value.trim(),w=num($('aw'));if(!n||!w){alert("Nom va enini kiriting");return}pj.apps.push({n,w});$('an').value='';$('aw').value='';sv();drawProj()};
+$('sab').onclick=()=>{const x=num($('sx')),h=num($('sh'));if(!h){alert("Balandlikni kiriting");return}pj.soc.push({t:$('st').value,w:+$('sw1').value,x,h});$('sx').value='';$('sh').value='';sv();drawProj()};
+drawCat();drawProj();drawMats();drawOrd();
+</script></body></html>
